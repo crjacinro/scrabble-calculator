@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scrabble-backend:latest
+    container_name: scrabble-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/backend_db
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped 
