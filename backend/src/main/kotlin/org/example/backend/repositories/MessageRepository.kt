@@ -1,6 +1,6 @@
 package org.example.backend.repositories
 
 import org.example.backend.models.Message
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface MessageRepository : CrudRepository<Message, String>
+interface MessageRepository : JpaRepository<Message, String>
