@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class RulesController(private val rulesService: RulesService) {
     @GetMapping("/rules")
-    fun index(): ResponseEntity<LetterRulesResponse> {
+    fun rulesIndex(): ResponseEntity<LetterRulesResponse> {
         val rules = rulesService.findAllLetterRules()
 
         return ResponseEntity.ok().body(rules.toResponse())

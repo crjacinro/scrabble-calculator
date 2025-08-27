@@ -1,13 +1,8 @@
 -- schema.sql
-CREATE TABLE IF NOT EXISTS rules_letters
-(
-    letter
-    CHAR
-(
-    1
-) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS rules_letters(
+    letter CHAR(1) PRIMARY KEY,
     score INT NOT NULL
-    );
+);
 
 -- For demonstration purposes, initialize database by default
 INSERT INTO rules_letters (letter, score)
@@ -36,6 +31,12 @@ VALUES ('A', 1),
        ('J', 8),
        ('X', 8),
        ('Q', 10),
-       ('Z', 10) ON DUPLICATE KEY
-UPDATE score =
-VALUES (score);
+       ('Z', 10)
+ON DUPLICATE KEY UPDATE score = VALUES (score);
+
+CREATE TABLE IF NOT EXISTS word_scores (
+     id         INT         AUTO_INCREMENT  PRIMARY KEY,
+     word_used  VARCHAR(50) NOT NULL,
+     score      INT         NOT NULL,
+     played_at  TIMESTAMP   DEFAULT         CURRENT_TIMESTAMP
+);
