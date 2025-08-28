@@ -1,6 +1,6 @@
 package org.example.backend.dto.response
 
-import org.example.backend.entities.Scores
+import org.example.backend.entities.WordScore
 
 data class TopScoresResponse(
     val topScores: List<TopScore>
@@ -11,7 +11,7 @@ data class TopScore(
     val score: Int,
 )
 
-fun List<Scores>.toResponse(): TopScoresResponse {
+fun List<WordScore>.toResponse(): TopScoresResponse {
     val scores = this.map { score ->
         TopScore(score.wordUsed, score.score)
     }

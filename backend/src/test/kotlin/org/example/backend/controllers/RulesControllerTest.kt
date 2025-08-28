@@ -2,7 +2,7 @@ package org.example.backend.controllers
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import org.example.backend.entities.RulesLetters
+import org.example.backend.entities.LetterRule
 import org.example.backend.services.RulesService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ class RulesControllerTest {
 
     @Test
     fun `When GET rules is invoked, Then it should return the rules on the score per letter as a list`() {
-        every { service.findAllLetterRules() } returns listOf(RulesLetters('a', 1), RulesLetters('z', 10))
+        every { service.findAllLetterRules() } returns listOf(LetterRule('a', 1), LetterRule('z', 10))
 
         mockMvc.perform(get("/rules"))
             .andExpect(status().isOk)

@@ -1,6 +1,6 @@
 package org.example.backend.dto.response
 
-import org.example.backend.entities.Scores
+import org.example.backend.entities.WordScore
 
 
 data class SaveScoreResponse(
@@ -9,7 +9,7 @@ data class SaveScoreResponse(
     val score: Int,
 )
 
-fun Scores.toResponse(): SaveScoreResponse =
+fun WordScore.toResponse(): SaveScoreResponse =
     SaveScoreResponse(
         id = this.id,
         wordUsed = this.wordUsed,

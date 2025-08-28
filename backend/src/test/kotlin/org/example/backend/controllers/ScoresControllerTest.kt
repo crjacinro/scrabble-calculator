@@ -2,7 +2,7 @@ package org.example.backend.controllers
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import org.example.backend.entities.Scores
+import org.example.backend.entities.WordScore
 import org.example.backend.services.ScoresService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,8 +26,8 @@ class ScoresControllerTest {
     @Test
     fun `When GET scores is invoked, Then it should return the top k scores by default`() {
         every { service.getHighestScores(2) } returns listOf(
-            Scores(1, "abc", 123),
-            Scores(2, "xyz", 456),
+            WordScore(1, "abc", 123),
+            WordScore(2, "xyz", 456),
         )
 
         mockMvc.perform(get("/scores?top=2"))
@@ -48,7 +48,7 @@ class ScoresControllerTest {
     fun `When POST scores is invoked, Then the score should be stored by the service returns saved score`() {
         val incomingJson = """{"wordUsed": "hello", "score": 5}"""
         val timestamp = LocalDateTime.of(2024, 1, 1, 12, 0)
-        val saved = Scores(id = 123, wordUsed = "hello", score = 5, playedAt = timestamp)
+        val saved = WordScore(id = 123, wordUsed = "hello", score = 5, playedAt = timestamp)
         every { service.save(match { it.wordUsed == "hello" && it.score == 5 }) } returns saved
 
         mockMvc.perform(

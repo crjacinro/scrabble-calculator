@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "rules_letters")
-data class RulesLetters(
+data class LetterRule(
     @Id
     @Column(name = "letter", nullable = false)
     val letter: Char,

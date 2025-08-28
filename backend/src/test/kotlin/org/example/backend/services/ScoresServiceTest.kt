@@ -3,7 +3,7 @@ package org.example.backend.services
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.example.backend.entities.Scores
+import org.example.backend.entities.WordScore
 import org.example.backend.repositories.ScoresRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -17,8 +17,8 @@ class ScoresServiceTest {
     @Test
     fun `When finding the top k highest scores, Then it should return the list with the top 10 highest scores`() {
         val topScores = listOf(
-            Scores(wordUsed = "abc", score = 5),
-            Scores(wordUsed = "xyz", score = 7),
+            WordScore(wordUsed = "abc", score = 5),
+            WordScore(wordUsed = "xyz", score = 7),
         )
         val topK = 10
         val pageTopK = Pageable.ofSize(topK)
