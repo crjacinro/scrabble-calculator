@@ -24,9 +24,11 @@ class ScoresServiceTest {
         val pageTopK = Pageable.ofSize(topK)
         every { repository.findAllByOrderByScoreDesc(pageTopK) } returns topScores
 
-        val result = service.getHighestScores()
+        val result = service.getHighestScores(topK)
 
         assertEquals(topScores, result)
         verify(exactly = 1) { repository.findAllByOrderByScoreDesc(pageTopK) }
     }
+
+
 } 

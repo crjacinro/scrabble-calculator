@@ -7,5 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ScoresService(private val db: ScoresRepository) {
-    fun getHighestScores(): List<Scores> = db.findAllByOrderByScoreDesc(Pageable.ofSize(10))
+    fun getHighestScores(topK: Int): List<Scores> = db.findAllByOrderByScoreDesc(Pageable.ofSize(topK))
+
+    fun save(score: Scores): Scores = db.save(score)
 }

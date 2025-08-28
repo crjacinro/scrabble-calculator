@@ -9,9 +9,7 @@ data class LetterRulesResponse(
 fun List<RulesLetters>.toResponse(): LetterRulesResponse {
     val scoresMap = mutableMapOf<Char, Int>()
 
-    this.forEach { rule ->
-        scoresMap[rule.letter] = rule.score
-    }
+    this.forEach { rule -> scoresMap[rule.letter] = rule.score }
 
     return LetterRulesResponse(scoresMap)
 }
