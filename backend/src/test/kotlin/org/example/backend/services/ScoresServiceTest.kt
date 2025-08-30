@@ -3,16 +3,19 @@ package org.example.backend.services
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import letterRules
 import org.example.backend.entities.WordScore
 import org.example.backend.repositories.ScoresRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.Pageable
 
 class ScoresServiceTest {
 
-    private val repository: ScoresRepository = mockk(relaxed = true)
-    private val service = ScoresService(repository)
+    private val scoresRepository: ScoresRepository = mockk(relaxed = true)
+    private val rulesService: RulesService = mockk(relaxed = true)
+    private val service = ScoresService(scoresRepository, rulesService)
 
     @Test
     fun `When finding the top k highest scores, Then it should return the list with the top 10 highest scores`() {
@@ -22,13 +25,29 @@ class ScoresServiceTest {
         )
         val topK = 10
         val pageTopK = Pageable.ofSize(topK)
-        every { repository.findAllByOrderByScoreDesc(pageTopK) } returns topScores
+        every { scoresRepository.findAllByOrderByScoreDesc(pageTopK) } returns topScores
 
         val result = service.getHighestScores(topK)
 
         assertEquals(topScores, result)
-        verify(exactly = 1) { repository.findAllByOrderByScoreDesc(pageTopK) }
+        verify(exactly = 1) { scoresRepository.findAllByOrderByScoreDesc(pageTopK) }
     }
 
+    @Test
+    fun `When POST scores is invoked with an invalid score value, Then the score it should throw an error`() {
+        val scoreToSave = WordScore(wordUsed = "abc", score = 5)
+        assertThrows<IllegalArgumentException> {
+            service.save(scoreToSave)
+        }
+        verify(exactly = 0) { scoresRepository.save(scoreToSave) }
+    }
 
+    @Test
+    fun `When POST scores is invoked with a valid score value, Then the score it should be saved successfully`() {
+        val scoreToSave = WordScore(wordUsed = "aeiou", score = 5)
+        every { rulesService.findAllLetterRules() } returns letterRules
+        every { scoresRepository.save(scoreToSave) } returns scoreToSave
+        service.save(scoreToSave)
+        verify(exactly = 1) { scoresRepository.save(scoreToSave) }
+    }
 } 

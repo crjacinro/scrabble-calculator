@@ -35,4 +35,10 @@ class RulesControllerTest {
                 )
             )
     }
+
+    @Test
+    fun `When an undefined endpoint is invoked, Then it should return a proper error response`() {
+        mockMvc.perform(get("/rules/undefined"))
+            .andExpect(status().is5xxServerError)
+    }
 } 

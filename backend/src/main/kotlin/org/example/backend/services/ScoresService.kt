@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
-class ScoresService(private val scoresDb: ScoresRepository, private val rulesDb: RulesService) {
+class ScoresService(private val scoresDb: ScoresRepository, private val rulesService: RulesService) {
     fun getHighestScores(topK: Int): List<WordScore> = scoresDb.findAllByOrderByScoreDesc(Pageable.ofSize(topK))
 
     fun save(score: WordScore): WordScore {
@@ -14,7 +14,7 @@ class ScoresService(private val scoresDb: ScoresRepository, private val rulesDb:
             throw IllegalArgumentException("Word used must contain only letters")
         }
 
-        verifyScoreByRule(score, rulesDb.findAllLetterRules().associate { it.letter to it.score })
+        verifyScoreByRule(score, rulesService.findAllLetterRules().associate { it.letter to it.score })
 
         return scoresDb.save(score)
     }
