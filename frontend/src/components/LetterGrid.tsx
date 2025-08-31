@@ -24,7 +24,7 @@ const TilesGrid: React.FC<LetterGridProps> = ({ tiles, handleTileChange, handleK
             autoFocus={index === 0}
           />
           <div className="absolute -bottom-0 right-1 transform -translate-x-1/2 text-xs text-base-content/50">
-            {(letterScore && letterScore[index]) ?? ""}
+            {(letterScore && letterScore[index] !== 0 && letterScore[index]) ?? ""}
           </div>
         </div>
       ))}

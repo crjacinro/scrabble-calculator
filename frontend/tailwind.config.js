@@ -26,7 +26,7 @@ module.exports = {
   ],
   daisyui: {
     themes: [
-      'dracula'
+      'forest'
     ],
   }
 }

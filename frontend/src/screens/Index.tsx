@@ -8,9 +8,11 @@ import { useQuery } from '@tanstack/react-query';
 import { fakeApiCall } from '~/lib/api';
 import { STALE_TIME } from '~/constants';
 import ScoresPerLetter from '~/domain/rules';
+import { TILE_COUNT } from '~/domain/config';
 
 function Index() {
-  const [tiles, setTiles] = useState<string[]>(Array(10).fill(''));
+  const [tiles, setTiles] = useState<string[]>(Array(TILE_COUNT).fill(''));
+  const [tileScores, setTileScores] = useState<number[]>(Array(TILE_COUNT).fill(''));
   const [score, setScore] = useState<number>(0);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -47,6 +49,10 @@ function Index() {
     newTiles[index] = value.toUpperCase();
     setTiles(newTiles);
 
+    const newTileScores = [...tileScores];
+    newTileScores[index] = scrabbleRules.scoresPerLetter[value.toUpperCase()] || 0;
+    setTileScores(newTileScores);
+
     if (value && index < 9) {
       const nextInput = document.getElementById(`tile-${index + 1}`);
       if (nextInput) {
@@ -65,7 +71,8 @@ function Index() {
   };
 
   const resetTiles = () => {
-    setTiles(Array(10).fill(''));
+    setTiles(Array(TILE_COUNT).fill(''));
+    setTileScores(Array(TILE_COUNT).fill(0));
     setScore(0);
 
     const firstInput = document.getElementById('tile-0');
@@ -94,13 +101,13 @@ function Index() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary mb-2">Scrabble Calculator</h1>
-            <p className="text-base-content/70">Enter a word using the tiles below and check your score!</p>
+            <p className="text-base-content/70">Enter a word on the tiles below and check your score!</p>
           </div>
-          <LetterGrid tiles={tiles} handleTileChange={handleTileChange} handleKeyDown={handleKeyDown} />
+          <LetterGrid tiles={tiles} letterScore={tileScores} handleTileChange={handleTileChange} handleKeyDown={handleKeyDown} />
           <div className="flex flex-wrap gap-4 justify-center p-6  mb-6">
             <ActionButton
               onClick={resetTiles}
-              className="btn btn-primary btn-lg gap-2"
+              className="btn btn-primary btn-md gap-2"
               icon={
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -115,7 +122,7 @@ function Index() {
               Reset Tiles
             </ActionButton>
             <ActionButton
-              className="btn btn-secondary btn-lg gap-2"
+              className="btn btn-secondary btn-md gap-2"
               icon={
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -130,7 +137,7 @@ function Index() {
               View Top Scores
             </ActionButton>
             <ActionButton
-              className="btn btn-accent btn-lg gap-2"
+              className="btn btn-accent btn-md gap-2"
               icon={
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -143,7 +150,7 @@ function Index() {
           <div className="flex items-center justify-center gap-4">
             <span className="text-2xl font-semibold text-base-content">Score:</span>
             <div className="text-primary-content px-6 py-3 rounded-box">
-              <span className="text-3xl font-bold text-amber-50">{score}</span>
+              <span className="text-3xl font-bold text-base-content">{score}</span>
             </div>
           </div>
         </div>
