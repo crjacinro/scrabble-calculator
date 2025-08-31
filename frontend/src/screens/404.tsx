@@ -1,4 +1,4 @@
-import {Head} from "~/components/components/Head";
+import {Head} from "~/components/Head";
 
 function Page404() {
   return (

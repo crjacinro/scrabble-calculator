@@ -1,11 +1,39 @@
-import { Head } from '~/components/components/Head';
-import React, { useState } from 'react';
-import LetterGrid from '~/components/components/LetterGrid';
-import ActionButton from '~/components/components/ActionButton';
+import { Head } from '~/components/Head';
+import React, { useEffect, useState } from 'react';
+import LetterGrid from '~/components/LetterGrid';
+import ActionButton from '~/components/ActionButton';
+import Loading from '~/components/Loading';
+import Toast from '~/components/Toast';
+import { useQuery } from '@tanstack/react-query';
+import { fakeApiCall } from '~/lib/api';
+import { STALE_TIME } from '~/constants';
 
 function Index() {
   const [tiles, setTiles] = useState<string[]>(Array(10).fill(''));
   const [score, setScore] = useState<number>(0);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'error' | 'success' | 'info'>('info');
+
+  const { data, error, isLoading, isError } = useQuery({
+    queryKey: ['initialData'],
+    queryFn: fakeApiCall,
+    staleTime: STALE_TIME
+  });
+
+  useEffect(() => {
+    if (data && data.success) {
+      console.log('API call successful:', data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isError && error) {
+      setToastMessage(error.message);
+      setToastType('error');
+      setShowToast(true);
+    }
+  }, [isError, error]);
 
   const handleTileChange = (index: number, value: string) => {
     const newTiles = [...tiles];
@@ -39,6 +67,19 @@ function Index() {
     }
   };
 
+  const closeToast = () => {
+    setShowToast(false);
+  };
+
+  if (isLoading) {
+    return (
+      <>
+        <Head title="Scrabble Calculator" />
+        <Loading message="Loading Scrabble Calculator..." />
+      </>
+    );
+  }
+
   return (
     <>
       <Head title="Scrabble Calculator" />
@@ -48,9 +89,7 @@ function Index() {
             <h1 className="text-4xl font-bold text-primary mb-2">Scrabble Calculator</h1>
             <p className="text-base-content/70">Enter a word using the tiles below and check your score!</p>
           </div>
-
           <LetterGrid tiles={tiles} handleTileChange={handleTileChange} handleKeyDown={handleKeyDown} />
-
           <div className="flex flex-wrap gap-4 justify-center p-6  mb-6">
             <ActionButton
               onClick={resetTiles}
@@ -68,7 +107,6 @@ function Index() {
             >
               Reset Tiles
             </ActionButton>
-
             <ActionButton
               className="btn btn-secondary btn-lg gap-2"
               icon={
@@ -84,7 +122,6 @@ function Index() {
             >
               View Top Scores
             </ActionButton>
-
             <ActionButton
               className="btn btn-accent btn-lg gap-2"
               icon={
@@ -96,7 +133,6 @@ function Index() {
               Save Score
             </ActionButton>
           </div>
-
           <div className="flex items-center justify-center gap-4">
             <span className="text-2xl font-semibold text-base-content">Score:</span>
             <div className="text-primary-content px-6 py-3 rounded-box">
@@ -105,6 +141,13 @@ function Index() {
           </div>
         </div>
       </div>
+      <Toast
+        message={toastMessage}
+        type={toastType}
+        isVisible={showToast}
+        onClose={closeToast}
+        duration={5000}
+      />
     </>
   );
 }

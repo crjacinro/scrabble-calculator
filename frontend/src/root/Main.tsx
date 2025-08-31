@@ -1,4 +1,4 @@
-import { Router } from "~/components/router/Router";
+import { Router } from "~/router/Router";
 
 function Main() {
   return (
