@@ -7,23 +7,17 @@ export interface ApiResponse {
 }
 
 export const fakeApiCall = async (): Promise<ApiResponse> => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // Simulate random success/failure (90% success rate)
-  const isSuccess = Math.random() > 0.1;
-  
-  if (isSuccess) {
-    return {
-      success: true,
-      message: "Data loaded successfully",
-      timestamp: new Date().toISOString(),
-      data: {
-        scrabbleWords: ["HELLO", "WORLD", "SCRABBLE", "GAME"],
-        highScores: [120, 95, 87, 76]
-      }
-    };
-  } else {
-    throw new Error("Failed to load data. Please try again.");
+  const response = await fetch('http://localhost:8080/api/v1/rules');
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
+  const data = await response.json();
+  localStorage.setItem('scrabble-rules', JSON.stringify(data));
+
+  return {
+    success: true,
+    message: "Data loaded successfully",
+    timestamp: new Date().toISOString(),
+    data
+  };
 }; 

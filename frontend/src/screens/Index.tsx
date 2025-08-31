@@ -7,6 +7,7 @@ import Toast from '~/components/Toast';
 import { useQuery } from '@tanstack/react-query';
 import { fakeApiCall } from '~/lib/api';
 import { STALE_TIME } from '~/constants';
+import ScoresPerLetter from '~/domain/rules';
 
 function Index() {
   const [tiles, setTiles] = useState<string[]>(Array(10).fill(''));
@@ -15,17 +16,13 @@ function Index() {
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<'error' | 'success' | 'info'>('info');
 
-  const { data, error, isLoading, isError } = useQuery({
+  const scrabbleRules = JSON.parse(localStorage.getItem('scrabble-rules') || '{}') as ScoresPerLetter;
+
+  const { error, isLoading, isError } = useQuery({
     queryKey: ['initialData'],
     queryFn: fakeApiCall,
-    staleTime: STALE_TIME
+    staleTime: STALE_TIME,
   });
-
-  useEffect(() => {
-    if (data && data.success) {
-      console.log('API call successful:', data);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (isError && error) {
@@ -34,6 +31,16 @@ function Index() {
       setShowToast(true);
     }
   }, [isError, error]);
+
+  useEffect(() => {
+    let newScore = 0;
+    tiles.forEach((tile) => {
+      if (tile && scrabbleRules && scrabbleRules.scoresPerLetter[tile]) {
+        newScore += scrabbleRules.scoresPerLetter[tile];
+      }
+    });
+    setScore(newScore);
+  }, [tiles]);
 
   const handleTileChange = (index: number, value: string) => {
     const newTiles = [...tiles];
@@ -141,13 +148,7 @@ function Index() {
           </div>
         </div>
       </div>
-      <Toast
-        message={toastMessage}
-        type={toastType}
-        isVisible={showToast}
-        onClose={closeToast}
-        duration={5000}
-      />
+      <Toast message={toastMessage} type={toastType} isVisible={showToast} onClose={closeToast} duration={5000} />
     </>
   );
 }
