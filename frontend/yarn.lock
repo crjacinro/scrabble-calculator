@@ -347,6 +347,18 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.14.2.tgz"
   integrity sha512-ACXpdMM9hmKZww21yEqWwiLws/UPLhNKvimN8RrYSqPSvB3ov7sLvAcfvaxePeLvccTQKGdkDIhLYApZVDFuKg==
 
+"@tanstack/query-core@5.85.6":
+  version "5.85.6"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.85.6.tgz"
+  integrity sha512-hCj0TktzdCv2bCepIdfwqVwUVWb+GSHm1Jnn8w+40lfhQ3m7lCO7ADRUJy+2unxQ/nzjh2ipC6ye69NDW3l73g==
+
+"@tanstack/react-query@^5.85.6":
+  version "5.85.6"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.85.6.tgz"
+  integrity sha512-VUAag4ERjh+qlmg0wNivQIVCZUrYndqYu3/wPCVZd4r0E+1IqotbeyGTc+ICroL/PqbpSaGZg02zSWYfcvxbdA==
+  dependencies:
+    "@tanstack/query-core" "5.85.6"
+
 "@tanstack/react-virtual@^3.0.0-beta.60":
   version "3.0.2"
   resolved "https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.0.2.tgz"
@@ -2373,7 +2385,7 @@ react-router@6.21.3:
   dependencies:
     "@remix-run/router" "1.14.2"
 
-"react@^16 || ^17 || ^18", "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18.2.0, react@>=16.8:
+"react@^16 || ^17 || ^18", "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18 || ^19", react@^18.2.0, react@>=16.8:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
