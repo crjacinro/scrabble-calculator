@@ -11,7 +11,7 @@ function Page404() {
               The page is not found.
             </h1>
             <div className="mt-4">
-              <a href="/" className="link-primary">Top Page</a>
+              <a href="/" className="link-primary">Play Scrabble Now!</a>
             </div>
           </div>
         </div>

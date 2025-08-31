@@ -2,11 +2,12 @@ import React from 'react';
 
 interface LetterGridProps {
   tiles: string[];
+  letterScore?: number[];
   handleTileChange: (index: number, value: string) => void;
   handleKeyDown: (index: number, e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const TilesGrid: React.FC<LetterGridProps> = ({ tiles, handleTileChange, handleKeyDown }) => (
+const TilesGrid: React.FC<LetterGridProps> = ({ tiles, handleTileChange, handleKeyDown, letterScore }) => (
   <div className="bg-base-100 rounded-box p-8 shadow-xl mb-8">
     <div className="flex justify-center items-center gap-3 mb-6">
       {tiles.map((tile, index) => (
@@ -22,8 +23,8 @@ const TilesGrid: React.FC<LetterGridProps> = ({ tiles, handleTileChange, handleK
             placeholder=""
             autoFocus={index === 0}
           />
-          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 text-xs text-base-content/50">
-            {index + 1}
+          <div className="absolute -bottom-0 right-1 transform -translate-x-1/2 text-xs text-base-content/50">
+            {(letterScore && letterScore[index]) ?? ""}
           </div>
         </div>
       ))}
