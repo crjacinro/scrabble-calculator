@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+data/backend_db.mv.db
+data/backend_db.trace.db
