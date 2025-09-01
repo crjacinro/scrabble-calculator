@@ -1,5 +1,8 @@
 import { ApiResponse } from '~/data/api-response';
 import { TopScore } from '~/domain/scores';
+import { BACKEND_PORT, BACKEND_URL, DICTIONARY_SERVICE_URL } from '~/constants';
+
+const BASE_URL = `${BACKEND_URL}:${BACKEND_PORT}`;
 
 export interface SaveScoreRequest {
   score: number;
@@ -7,7 +10,7 @@ export interface SaveScoreRequest {
 }
 
 export const validateWord = async (word: string) => {
-  const endpoint = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+  const endpoint = `${DICTIONARY_SERVICE_URL}/${word}`;
   const isWordValidResponse = await fetch(endpoint);
   if (!isWordValidResponse.ok) {
     throw new Error('This is not a valid word in English dictionary. Try again.');
@@ -16,8 +19,8 @@ export const validateWord = async (word: string) => {
 
 export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiResponse> => {
   await validateWord(request.wordUsed);
-
-  const response = await fetch('http://localhost:8080/api/v1/scores', {
+  const endpoint = `${BASE_URL}/api/v1/scores`;
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,7 +51,8 @@ interface TopScoresResponse {
 }
 
 export const getTopScores = async (): Promise<TopScore[]> => {
-  const response = await fetch('http://localhost:8080/api/v1/scores?top=10');
+  const endpoint = `${BASE_URL}/api/v1/scores?top=10`;
+  const response = await fetch(endpoint);
   if (!response.ok) {
     throw new Error(`API error: ${response.status} ${response.statusText}`);
   }

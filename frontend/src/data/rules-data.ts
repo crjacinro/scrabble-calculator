@@ -1,8 +1,10 @@
 import { ApiResponse } from '~/data/api-response';
 import { ScoresPerLetter } from '~/domain/scores';
+import { BACKEND_PORT, BACKEND_URL } from '~/constants';
 
 export const getRulesApi = async (): Promise<ApiResponse> => {
-  const response = await fetch('http://localhost:8080/api/v1/rules');
+  const endpoint = `${BACKEND_URL}:${BACKEND_PORT}/api/v1/rules`;
+  const response = await fetch(endpoint);
   if (!response.ok) {
     throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
