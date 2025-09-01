@@ -78,11 +78,6 @@ function Index() {
     setTiles(Array(TILE_COUNT).fill(''));
     setTileScores(Array(TILE_COUNT).fill(0));
     setScore(0);
-
-    const firstInput = document.getElementById('tile-0');
-    if (firstInput) {
-      firstInput.focus();
-    }
   };
 
   const showToastMessage = (message: string, type: ToastType) => {
@@ -92,17 +87,7 @@ function Index() {
   };
 
   const handleSaveScore = async () => {
-    if (score === 0) {
-      showToastMessage('No score to save. Please enter some letters first.', ToastType.Info);
-      return;
-    }
-
     const word = tiles.filter(tile => tile).join('');
-    if (word.length === 0) {
-      showToastMessage('No word entered. Please enter some letters first.', ToastType.Info);
-      return;
-    }
-
     setIsSavingScore(true);
     try {
       const response = await saveScoreData({

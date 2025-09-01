@@ -5,8 +5,8 @@ export interface SaveScoreRequest {
   wordUsed: string;
 }
 
-export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiResponse> => {
-  const endpoint = `https://api.dictionaryapi.dev/api/v2/entries/en/${request.wordUsed}`
+export const validateWord = async (word: string) => {
+  const endpoint = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
   const isWordValidResponse = await fetch(endpoint, {
     method: 'GET',
     headers: {
@@ -17,6 +17,10 @@ export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiRespo
   if (!isWordValidResponse.ok) {
     throw new Error('This is not a valid word in English dictionary. Try again.');
   }
+};
+
+export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiResponse> => {
+  await validateWord(request.wordUsed);
 
   const response = await fetch('http://localhost:8080/api/v1/scores', {
     method: 'POST',
@@ -32,7 +36,7 @@ export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiRespo
   
   return {
     success: true,
-    message: `Score ${request.score} saved successfully!`,
+    message: `${request.wordUsed} - ${request.score} saved successfully!`,
     timestamp: new Date().toISOString(),
     data: response.json(),
   };
