@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
 
+export enum ToastType {
+  Error ,
+  Success,
+  Info
+}
+
 interface ToastProps {
   message: string;
-  type: 'error' | 'success' | 'info';
+  type: ToastType;
   isVisible: boolean;
   onClose: () => void;
   duration?: number;
@@ -28,11 +34,11 @@ const Toast: React.FC<ToastProps> = ({
 
   const getToastStyles = () => {
     switch (type) {
-      case 'error':
+      case ToastType.Error:
         return 'alert alert-error';
-      case 'success':
+      case ToastType.Success:
         return 'alert alert-success';
-      case 'info':
+      case ToastType.Info:
         return 'alert alert-info';
       default:
         return 'alert';
@@ -43,13 +49,13 @@ const Toast: React.FC<ToastProps> = ({
     <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-right-2">
       <div className={getToastStyles()}>
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          {type === 'error' && (
+          {ToastType.Error && (
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           )}
-          {type === 'success' && (
+          {ToastType.Success && (
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           )}
-          {type === 'info' && (
+          {ToastType.Info && (
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           )}
         </svg>

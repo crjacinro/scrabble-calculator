@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import LetterGrid from '~/components/LetterGrid';
 import ActionButton from '~/components/ActionButton';
 import Loading from '~/components/Loading';
-import Toast from '~/components/Toast';
+import Toast, { ToastType } from '~/components/Toast';
 import { useQuery } from '@tanstack/react-query';
-import { fakeApiCall } from '~/lib/api';
+import { getRulesApi, getRulesLocal } from '~/data/rulesData';
 import { STALE_TIME } from '~/constants';
-import ScoresPerLetter from '~/domain/rules';
 import { TILE_COUNT } from '~/domain/config';
+import { saveScoreData } from '~/data/scoresData';
 
 function Index() {
   const [tiles, setTiles] = useState<string[]>(Array(TILE_COUNT).fill(''));
@@ -16,21 +16,20 @@ function Index() {
   const [score, setScore] = useState<number>(0);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState<'error' | 'success' | 'info'>('info');
+  const [toastType, setToastType] = useState<ToastType>(ToastType.Info);
+  const [isSavingScore, setIsSavingScore] = useState(false);
 
-  const scrabbleRules = JSON.parse(localStorage.getItem('scrabble-rules') || '{}') as ScoresPerLetter;
+  const scrabbleRules = getRulesLocal();
 
   const { error, isLoading, isError } = useQuery({
     queryKey: ['initialData'],
-    queryFn: fakeApiCall,
+    queryFn: getRulesApi,
     staleTime: STALE_TIME,
   });
 
   useEffect(() => {
     if (isError && error) {
-      setToastMessage(error.message);
-      setToastType('error');
-      setShowToast(true);
+      showToastMessage(error.message, ToastType.Error);
     }
   }, [isError, error]);
 
@@ -45,6 +44,11 @@ function Index() {
   }, [tiles]);
 
   const handleTileChange = (index: number, value: string) => {
+    console.log(index, value);
+    if (!/^[A-Za-z]+$/.test(value) && value !== '') {
+      showToastMessage('Invalid letter. Please enter a letter between A-Z only', ToastType.Info);
+      return;
+    }
     const newTiles = [...tiles];
     newTiles[index] = value.toUpperCase();
     setTiles(newTiles);
@@ -78,6 +82,40 @@ function Index() {
     const firstInput = document.getElementById('tile-0');
     if (firstInput) {
       firstInput.focus();
+    }
+  };
+
+  const showToastMessage = (message: string, type: ToastType) => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+  };
+
+  const handleSaveScore = async () => {
+    if (score === 0) {
+      showToastMessage('No score to save. Please enter some letters first.', ToastType.Info);
+      return;
+    }
+
+    const word = tiles.filter(tile => tile).join('');
+    if (word.length === 0) {
+      showToastMessage('No word entered. Please enter some letters first.', ToastType.Info);
+      return;
+    }
+
+    setIsSavingScore(true);
+    try {
+      const response = await saveScoreData({
+        score,
+        wordUsed: word,
+      });
+
+      showToastMessage(response.message, ToastType.Success);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save score';
+      showToastMessage(errorMessage, ToastType.Error);
+    } finally {
+      setIsSavingScore(false);
     }
   };
 
@@ -137,12 +175,21 @@ function Index() {
               View Top Scores
             </ActionButton>
             <ActionButton
+              onClick={handleSaveScore}
               className="btn btn-accent btn-md gap-2"
               icon={
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               }
+              isLoading={isSavingScore}
+              loadingIcon={
+                <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              }
+              disabled={score === 0}
             >
               Save Score
             </ActionButton>
