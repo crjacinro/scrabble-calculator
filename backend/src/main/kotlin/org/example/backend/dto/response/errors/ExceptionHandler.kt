@@ -48,12 +48,12 @@ class ExceptionHandler {
         request: HttpServletRequest
     ): ResponseEntity<ErrorResponse> {
         val response = ErrorResponse(
-            status = HttpStatus.NOT_FOUND.value(),
-            error = HttpStatus.NOT_FOUND.reasonPhrase,
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.reasonPhrase,
             message = ex.message,
             path = request.requestURI
         )
-        return ResponseEntity(response, HttpStatus.NOT_FOUND)
+        return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(Exception::class)

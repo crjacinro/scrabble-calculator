@@ -10,8 +10,9 @@ class ScoresService(private val scoresDb: ScoresRepository, private val rulesSer
     fun getHighestScores(topK: Int): List<WordScore> = scoresDb.findAllByOrderByScoreDesc(Pageable.ofSize(topK))
 
     fun save(score: WordScore): WordScore {
-        if (!score.wordUsed.all { it.isLetter() }) {
-            throw IllegalArgumentException("Word used must contain only letters")
+        print(score.wordUsed)
+        if (!score.wordUsed.all { it in 'A'..'Z' }) {
+            throw IllegalArgumentException("Word used must contain only A to Z letters")
         }
 
         verifyScoreByRule(score, rulesService.findAllLetterRules().associate { it.letter to it.score })

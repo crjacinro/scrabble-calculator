@@ -13,6 +13,6 @@ data class ScoresRequest(
 
 fun ScoresRequest.toEntity(): WordScore =
     WordScore(
-        wordUsed = this.wordUsed,
+        wordUsed = this.wordUsed.uppercase(),
         score = this.score
     )

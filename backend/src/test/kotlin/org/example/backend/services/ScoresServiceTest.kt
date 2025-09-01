@@ -34,7 +34,7 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with an invalid score value, Then the score it should throw an error`() {
+    fun `When POST scores is invoked with an invalid score value, Then it should throw an error`() {
         val scoreToSave = WordScore(wordUsed = "abc", score = 5)
         assertThrows<IllegalArgumentException> {
             service.save(scoreToSave)
@@ -43,8 +43,17 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with a valid score value, Then the score it should be saved successfully`() {
-        val scoreToSave = WordScore(wordUsed = "aeiou", score = 5)
+    fun `When POST scores is invoked with an invalid letter, Then the score it should throw an error`() {
+        val scoreToSave = WordScore(wordUsed = "Ü@a", score = 5)
+        assertThrows<IllegalArgumentException> {
+            service.save(scoreToSave)
+        }
+        verify(exactly = 0) { scoresRepository.save(scoreToSave) }
+    }
+
+    @Test
+    fun `When POST scores is invoked with a valid score value, Then it should be saved successfully`() {
+        val scoreToSave = WordScore(wordUsed = "AEIOU", score = 5)
         every { rulesService.findAllLetterRules() } returns letterRules
         every { scoresRepository.save(scoreToSave) } returns scoreToSave
         service.save(scoreToSave)

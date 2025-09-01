@@ -46,10 +46,10 @@ class ScoresControllerTest {
 
     @Test
     fun `When POST scores is invoked, Then the score should be stored by the service returns saved score`() {
-        val incomingJson = """{"wordUsed": "hello", "score": 5}"""
+        val incomingJson = """{"wordUsed": "HELLO", "score": 5}"""
         val timestamp = LocalDateTime.of(2024, 1, 1, 12, 0)
-        val saved = WordScore(id = 123, wordUsed = "hello", score = 5, playedAt = timestamp)
-        every { service.save(match { it.wordUsed == "hello" && it.score == 5 }) } returns saved
+        val saved = WordScore(id = 123, wordUsed = "HELLO", score = 5, playedAt = timestamp)
+        every { service.save(match { it.wordUsed == "HELLO" && it.score == 5 }) } returns saved
 
         mockMvc.perform(
             post("/scores")
@@ -58,6 +58,6 @@ class ScoresControllerTest {
         )
             .andExpect(status().isCreated)
             .andExpect(header().string("Location", "/scores/123"))
-            .andExpect(content().json("""{"id": 123, "wordUsed": "hello", "score": 5}"""))
+            .andExpect(content().json("""{"id": 123, "wordUsed": "HELLO", "score": 5}"""))
     }
 } 
