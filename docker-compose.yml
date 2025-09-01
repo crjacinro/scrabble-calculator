@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: scrabble-frontend:latest
+    container_name: scrabble-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - scrabble-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: scrabble-backend:latest
+    container_name: scrabble-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/backend_db
+    volumes:
+      - ./backend/data:/app/data
+    restart: unless-stopped
+    networks:
+      - scrabble-network
+
+networks:
+  scrabble-network:
+    driver: bridge
+
+volumes:
+  backend-data:
+    driver: local 

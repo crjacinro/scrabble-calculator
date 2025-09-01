@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:5173"])
+@CrossOrigin(origins = ["http://localhost:3000"])
 class ScoresController(private val scoreService: ScoresService) {
     @GetMapping("/scores")
     fun scoresIndex(

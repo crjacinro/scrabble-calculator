@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS rules_letters(
 );
 
 -- For demonstration purposes, initialize database by default
-INSERT INTO rules_letters (letter, score)
+MERGE INTO rules_letters (letter, score)
 VALUES ('A', 1),
        ('E', 1),
        ('I', 1),
@@ -31,8 +31,7 @@ VALUES ('A', 1),
        ('J', 8),
        ('X', 8),
        ('Q', 10),
-       ('Z', 10)
-ON DUPLICATE KEY UPDATE score = VALUES (score);
+       ('Z', 10);
 
 CREATE TABLE IF NOT EXISTS word_scores (
      id         INT         AUTO_INCREMENT  PRIMARY KEY,
