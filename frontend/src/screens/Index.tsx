@@ -4,11 +4,13 @@ import LetterGrid from '~/components/LetterGrid';
 import ActionButton from '~/components/ActionButton';
 import Loading from '~/components/Loading';
 import Toast, { ToastType } from '~/components/Toast';
+import ScoreDialog from '~/components/ScoreDialog';
 import { useQuery } from '@tanstack/react-query';
-import { getRulesApi, getRulesLocal } from '~/data/rulesData';
+import { getRulesApi, getRulesLocal } from '~/data/rules-data';
 import { STALE_TIME } from '~/constants';
 import { TILE_COUNT } from '~/domain/config';
-import { saveScoreData } from '~/data/scoresData';
+import { getTopScores, saveScoreData } from '~/data/scores-data';
+import { TopScore } from '~/domain/scores';
 
 function Index() {
   const [tiles, setTiles] = useState<string[]>(Array(TILE_COUNT).fill(''));
@@ -18,6 +20,9 @@ function Index() {
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<ToastType>(ToastType.Info);
   const [isSavingScore, setIsSavingScore] = useState(false);
+  const [showScoreDialog, setShowScoreDialog] = useState(false);
+  const [topScores, setTopScores] = useState<TopScore[]>([]);
+  const [isLoadingScores, setIsLoadingScores] = useState(false);
 
   const scrabbleRules = getRulesLocal();
 
@@ -44,7 +49,6 @@ function Index() {
   }, [tiles]);
 
   const handleTileChange = (index: number, value: string) => {
-    console.log(index, value);
     if (!/^[A-Za-z]+$/.test(value) && value !== '') {
       showToastMessage('Invalid letter. Please enter a letter between A-Z only', ToastType.Info);
       return;
@@ -87,7 +91,7 @@ function Index() {
   };
 
   const handleSaveScore = async () => {
-    const word = tiles.filter(tile => tile).join('');
+    const word = tiles.filter((tile) => tile).join('');
     setIsSavingScore(true);
     try {
       const response = await saveScoreData({
@@ -102,6 +106,25 @@ function Index() {
     } finally {
       setIsSavingScore(false);
     }
+  };
+
+  const handleViewTopScores = async () => {
+    setShowScoreDialog(true);
+    setIsLoadingScores(true);
+    try {
+      const scores = await getTopScores();
+      setTopScores(scores);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load top scores';
+      showToastMessage(errorMessage, ToastType.Error);
+      setShowScoreDialog(false);
+    } finally {
+      setIsLoadingScores(false);
+    }
+  };
+
+  const closeScoreDialog = () => {
+    setShowScoreDialog(false);
   };
 
   const closeToast = () => {
@@ -126,7 +149,12 @@ function Index() {
             <h1 className="text-4xl font-bold text-primary mb-2">Scrabble Calculator</h1>
             <p className="text-base-content/70">Enter a word on the tiles below and check your score!</p>
           </div>
-          <LetterGrid tiles={tiles} letterScore={tileScores} handleTileChange={handleTileChange} handleKeyDown={handleKeyDown} />
+          <LetterGrid
+            tiles={tiles}
+            letterScore={tileScores}
+            handleTileChange={handleTileChange}
+            handleKeyDown={handleKeyDown}
+          />
           <div className="flex flex-wrap gap-4 justify-center p-6  mb-6">
             <ActionButton
               onClick={resetTiles}
@@ -145,6 +173,7 @@ function Index() {
               Reset Tiles
             </ActionButton>
             <ActionButton
+              onClick={handleViewTopScores}
               className="btn btn-secondary btn-md gap-2"
               icon={
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +200,11 @@ function Index() {
               loadingIcon={
                 <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
                 </svg>
               }
               disabled={score === 0}
@@ -188,6 +221,7 @@ function Index() {
         </div>
       </div>
       <Toast message={toastMessage} type={toastType} isVisible={showToast} onClose={closeToast} duration={5000} />
+      <ScoreDialog isOpen={showScoreDialog} onClose={closeScoreDialog} scores={topScores} isLoading={isLoadingScores} />
     </>
   );
 }

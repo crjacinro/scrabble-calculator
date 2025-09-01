@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react';
-import { Outlet, RouteObject, useRoutes, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Outlet, RouteObject, useRoutes } from 'react-router-dom';
 
 const Loading = () => <p className="p-4 w-full h-full text-center">Loading...</p>;
 
-const IndexScreen = lazy(() => import('~/screens'));
+const IndexScreen = lazy(() => import('~/screens/Index'));
 const Page404Screen = lazy(() => import('~/screens/404'));
 
 function Layout() {

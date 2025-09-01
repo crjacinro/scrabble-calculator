@@ -1,6 +1,5 @@
-import ScoresPerLetter from '~/domain/rules';
-import { ApiResponse } from '~/data/apiResponse';
-
+import { ApiResponse } from '~/data/api-response';
+import { ScoresPerLetter } from '~/domain/scores';
 
 export const getRulesApi = async (): Promise<ApiResponse> => {
   const response = await fetch('http://localhost:8080/api/v1/rules');
@@ -12,9 +11,9 @@ export const getRulesApi = async (): Promise<ApiResponse> => {
 
   return {
     success: true,
-    message: "Data loaded successfully",
+    message: 'Data loaded successfully',
     timestamp: new Date().toISOString(),
-    data
+    data,
   };
 };
 
