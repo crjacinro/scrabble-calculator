@@ -10,17 +10,27 @@ class ScoresService(private val scoresDb: ScoresRepository, private val rulesSer
     fun getHighestScores(topK: Int): List<WordScore> = scoresDb.findAllByOrderByScoreDesc(Pageable.ofSize(topK))
 
     fun save(score: WordScore): WordScore {
-        print(score.wordUsed)
-        if (!score.wordUsed.all { it in 'A'..'Z' }) {
-            throw IllegalArgumentException("Word used must contain only A to Z letters")
-        }
-
-        verifyScoreByRule(score, rulesService.findAllLetterRules().associate { it.letter to it.score })
+        verifyIsWordExists(score)
+        verifyIsLetterValid(score)
+        verifyScoreByRule(score)
 
         return scoresDb.save(score)
     }
 
-    private fun verifyScoreByRule(score: WordScore, rulesMap: Map<Char, Int>) {
+    private fun verifyIsWordExists(score: WordScore) {
+        if (scoresDb.existsByWordUsed(score.wordUsed)) {
+            throw IllegalArgumentException("Sorry! This word has already been used")
+        }
+    }
+
+    private fun verifyIsLetterValid(score: WordScore) {
+        if (!score.wordUsed.all { it in 'A'..'Z' }) {
+            throw IllegalArgumentException("Word used must contain only A to Z letters")
+        }
+    }
+
+    private fun verifyScoreByRule(score: WordScore) {
+        val rulesMap = rulesService.findAllLetterRules().associate { it.letter to it.score }
         val computedScore = score.wordUsed.uppercase().sumOf { rulesMap[it] ?: 0 }
         if (computedScore != score.score) {
             throw IllegalArgumentException("Score ${score.score} does not match computed score $computedScore for word ${score.wordUsed}")

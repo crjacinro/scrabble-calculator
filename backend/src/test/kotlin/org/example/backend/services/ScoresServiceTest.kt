@@ -34,7 +34,7 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with an invalid score value, Then it should throw an error`() {
+    fun `When POST scores is invoked with an invalid score value, Then the service should throw an error`() {
         val scoreToSave = WordScore(wordUsed = "abc", score = 5)
         assertThrows<IllegalArgumentException> {
             service.save(scoreToSave)
@@ -43,8 +43,19 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with an invalid letter, Then the score it should throw an error`() {
+    fun `When POST scores is invoked with an invalid letter, Then the service should throw an error`() {
         val scoreToSave = WordScore(wordUsed = "Ü@a", score = 5)
+        assertThrows<IllegalArgumentException> {
+            service.save(scoreToSave)
+        }
+        verify(exactly = 0) { scoresRepository.save(scoreToSave) }
+    }
+
+    @Test
+    fun `When POST scores is invoked with an existing word, Then the service it should throw an error`() {
+        every { scoresRepository.existsByWordUsed("EXCITING") } returns true
+
+        val scoreToSave = WordScore(wordUsed = "EXCITING", score = 5)
         assertThrows<IllegalArgumentException> {
             service.save(scoreToSave)
         }
