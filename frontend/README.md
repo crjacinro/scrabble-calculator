@@ -1,113 +1,285 @@
-# ⚡ vite-react-ts-tailwind-starter
+# Scrabble Calculator Frontend
 
-Starter using Vite + React + TypeScript + Tailwind with Firebase.
+A modern, responsive React application for calculating Scrabble scores with a beautiful UI built using TypeScript, Tailwind CSS, and DaisyUI.
 
-## Motivation
+## 🚀 Quick Start
 
-Improve building your faster **prototyping** by using Vite, TypeScript, React, TailwindCSS, Firebase.
+```bash
+# Install dependencies
+npm install
 
-This starter uses following libraries:
+# Start development server
+npm run dev
 
-- Vite
-- React
-  - React Router
-- TypeScript
-- Tailwind CSS
-  - daisyUI
-- Firebase(v9, modular)
-- ESLint
-- Prettier
+# Build for production
+npm run build
 
-## Set up
-
-```shell
-mv .env.local .env.local
-yarn
-yarn dev
+# Preview production build
+npm run serve
 ```
 
-### Firebase
+## 🏗️ Project Overview
 
-If you **DO NOT** use Firebase, you should do:
+This frontend application provides an intuitive interface for:
+- **Letter Grid Management**: Interactive grid for placing letters
+- **Score Calculation**: Real-time score computation based on backend rules
+- **High Score Tracking**: View and compare top scores
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
 
-- Delete the Firebase-related code: you check Main.tsx, SignInButton.tsx, SignOutButton.tsx.
-- And then delete `src/lib/firebase.ts`
-- Run `yarn remove firebase`
-- Remove `VITE_FIREBASE_*` env values from `.env.local`
+## 🔧 Prerequisites
 
-If you want to use Firebase, you should do:
+- **Node.js**: Version 18.0.0 or higher
+- **npm**: Version 9.0.0 or higher (comes with Node.js)
+- **Backend Service**: Spring Boot backend running on port 8080
 
-- copy Firebase env values from Firebase Console, and paste them to `.env.local`.
-- enable Google Auth in Firebase Console. ref: https://firebase.google.com/docs/auth/web/google-signin#before_you_begin
+### Version Check
 
-## Vite
+```bash
+node --version  # Should be >= 18.0.0
+npm --version   # Should be >= 9.0.0
+```
 
-[Vite](https://github.com/vitejs/vite) is a fast frontend build tool. According to the [README](https://github.com/vitejs/vite/blob/main/README.md), it consists of two major parts:
+## 📦 Installation
 
-- A dev server that serves your source files over native ES modules, with rich built-in features and astonishingly fast Hot Module Replacement (HMR).
-- A build command that bundles your code with Rollup, pre-configured to output highly optimized static assets for production.
+```bash
+# Clone the repository (if not already done)
+git clone <your-repo-url>
+cd scrabble-calculator/frontend
 
-## React
+# Install dependencies
+npm install
+```
 
-[React](https://github.com/facebook/react) is a JavaScript library for building user interfaces.
+## 🛠️ Development
 
-Due to its awesome renderer system, there are many [React Renderor](https://github.com/chentsulin/awesome-react-renderer). So React can be not used only Web, for example, used by [React Native](https://reactnative.dev/).
+### Development Server
 
-Let's dive into React and Vite can use with React.
+```bash
+# Start development server with hot reload
+npm run dev
 
-## TypeScript
+# The application will be available at:
+# http://localhost:5173
+```
 
-[TypeScript](https://github.com/microsoft/TypeScript) is a superset of JavaScript. It is just one of NPM library, but it provides an original compiler.
+### Build Commands
 
-When you use TypeScript with React, you can write JSX with TypeScript, called TSX. Then you can develop views written by  **Type-Safe** template.
+```bash
+# Build for production
+npm run build
 
-## Tailwind CSS
+# Preview production build locally
+npm run serve
 
-[Tailwind CSS](https://tailwindcss.com/) is modern utility-first CSS framework. It provides many CSS rules, but these are purged when production builds. So developers do not worry about CSS asset size for performance optimization.
+# The production build will be available at:
+# http://localhost:4173
+```
 
-In VSCode, I recommend to use [intellisense extension](https://tailwindcss.com/docs/intellisense).
+## 🧪 Testing
 
-Frequently, React developers are worried about how to write CSS in TSX(JSX) template. You must choose from CSS Modules, [styled-components](https://styled-components.com/), [linaria](https://github.com/callstack/linaria), and so on.
-Additionally, CSS architecture is difficult about scoping, e.g. BEM, FLOCSS.
+### Test Commands
 
-When you decide to use Tailwind, you only write utility-first CSS classes, you don't have to worry about them!
+```bash
+# Run tests in watch mode
+npm test
 
-### daisyUI
+# Run tests with UI
+npm run test:ui
 
-[daisyUI](https://daisyui.com/) is Tailwind CSS Components library.
+# Run tests once
+npm run test:run
+```
 
-It prepares components CSS classes such as 'btn'. If you provide 'btn' class to `<button>` element, then there should be placed completely designed button.
+### Test Coverage
 
-If you don't want to use it, just remove the package and remove config in `tailwind.config.js`.
+The test suite includes:
+- **Component Testing**: Using React Testing Library
+- **Unit Testing**: Vitest for fast test execution
+- **Integration Testing**: API integration tests
+- **UI Testing**: Component behavior and user interactions
 
-## Firebase
+### Test Structure
 
-[Firebase](https://firebase.google.com/) is a PaaS that makes us create hi-quality apps so easy and so fast.
+```
+src/
+├── components/
+│   └── __tests__/          # Component tests
+├── screens/
+│   └── __tests__/          # Screen tests
+└── test/                   # Test utilities and setup
+```
 
-This library is not suitable for everyone, but I think it is one of the best libraries for prototyping. Therefore, I have added it to this repository.
+## 🎨 Styling & UI
 
-The Firebase js SDK has become very useful in version 9, with [optimizations that greatly reduce bundle size](https://firebase.google.com/docs/web/modular-upgrade).
+### Technologies Used
 
-### How to Use
+- **Tailwind CSS**: Utility-first CSS framework
+- **DaisyUI**: Component library built on Tailwind
+- **PostCSS**: CSS processing and optimization
+- **Autoprefixer**: Automatic vendor prefixing
 
-Please look at [firebase.ts](https://github.com/TeXmeijin/vite-react-ts-tailwind-starter/blob/main/src/lib/firebase.ts).
+### Custom Styling
 
-There you will find a set of utility functions to manipulate Firebase for the environment in which the Emulator is used.
+```bash
+# Custom CSS files
+src/styles/
+├── arrow.css              # Custom arrow animations
+└── index.css              # Global styles and Tailwind imports
+```
 
-## Formatter and Linter
+## 🔌 API Integration
 
-Already set up [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/). You can customize the rules.
+### Backend Communication
 
-NOTICE: The template does not use [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier) and [prettier-eslint](https://github.com/prettier/prettier-eslint). So I recommend that running commands individually. e.g. `prettier && eslint`.
+The frontend communicates with the backend API endpoints:
 
-Please read: https://prettier.io/docs/en/integrating-with-linters.html.
+- **Base URL**: `http://localhost:8080`
+- **CORS**: Configured for local development
+- **Endpoints**:
+  - `GET /rules` - Letter scoring rules
+  - `GET /scores` - High scores
+  - `POST /scores` - Save new scores
 
-# ToDo
+### API Configuration
 
-- [x] install and set up [TailwindCSS/JIT](https://github.com/tailwindlabs/tailwindcss-jit) see this [PR](https://github.com/TeXmeijin/vite-react-ts-tailwind-starter/pull/1)
+```typescript
+// src/domain/config.ts
+export const API_BASE_URL = 'http://localhost:8080';
+```
 
----
+## 📱 Features
 
-### Support me!
+### Core Functionality
 
-<a href="https://www.buymeacoffee.com/meijin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+1. **Letter Grid**: Interactive 15x15 grid for Scrabble gameplay
+2. **Score Calculation**: Real-time scoring based on letter rules
+3. **Rule Management**: Display and apply letter scoring rules
+4. **Score History**: Track and display high scores
+5. **Responsive Design**: Mobile-friendly interface
+
+### User Experience
+
+- **Toast Notifications**: User feedback and error handling
+- **Loading States**: Smooth loading indicators
+- **Modal Dialogs**: Score submission and confirmation
+- **Keyboard Navigation**: Accessible keyboard controls
+
+## 🚀 Deployment
+
+### Production Build
+
+```bash
+# Create optimized production build
+npm run build
+
+# The build artifacts will be in the `dist/` directory
+```
+
+### Docker Deployment
+
+```bash
+# Build Docker image
+docker build -t scrabble-frontend .
+
+# Run container
+docker run -p 3000:80 scrabble-frontend
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### 1. Port Already in Use
+
+```bash
+# Error: Port 5173 is already in use
+# Solution: Kill the process or use a different port
+lsof -ti:5173 | xargs kill -9
+```
+
+#### 2. Dependencies Installation Issues
+
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Delete node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### 3. Build Failures
+
+```bash
+# Check TypeScript compilation
+npx tsc --noEmit
+
+# Verify Vite configuration
+npx vite --version
+```
+
+#### 4. Backend Connection Issues
+
+- Ensure backend is running on port 8080
+- Check CORS configuration in backend
+- Verify network connectivity
+
+### Development Tips
+
+1. **Hot Reload**: Changes automatically refresh in development mode
+2. **TypeScript**: Use strict mode for better code quality
+3. **ESLint**: Configured with Prettier for consistent formatting
+4. **Testing**: Write tests alongside component development
+
+## 📁 Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+├── screens/             # Page-level components
+├── router/              # React Router configuration
+├── domain/              # Business logic and types
+├── data/                # API response types and mock data
+├── styles/              # CSS and styling files
+└── test/                # Test setup and utilities
+```
+
+## 🔗 Dependencies
+
+### Core Dependencies
+
+- **React 18.2.0**: Modern React with hooks
+- **TypeScript 5.3.3**: Type-safe JavaScript
+- **Vite 4.4.9**: Fast build tool and dev server
+- **React Router 6.21.3**: Client-side routing
+
+### UI Dependencies
+
+- **Tailwind CSS 3.4.1**: Utility-first CSS
+- **DaisyUI 4.6.1**: Component library
+- **Headless UI 1.7.18**: Unstyled accessible components
+
+### Development Dependencies
+
+- **Vitest 3.2.4**: Fast unit testing
+- **React Testing Library**: Component testing utilities
+- **ESLint + Prettier**: Code quality and formatting
+
+## 📚 Additional Resources
+
+- [React Documentation](https://react.dev/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Vite Guide](https://vitejs.dev/guide/)
+- [Vitest Testing](https://vitest.dev/)
+
+## 🤝 Contributing
+
+1. Follow the existing code style and patterns
+2. Write tests for new components and features
+3. Ensure TypeScript compilation passes
+4. Test on multiple screen sizes for responsiveness
+
+## 📄 License
+
+This project is licensed under the MIT License.
