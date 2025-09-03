@@ -18,7 +18,7 @@ class ScoresServiceTest {
     private val service = ScoresService(scoresRepository, rulesService)
 
     @Test
-    fun `When finding the top k highest scores, Then it should return the list with the top 10 highest scores`() {
+    fun `When finding the top k highest scores, Then it should return the list with the top k highest scores`() {
         val topScores = listOf(
             WordScore(wordUsed = "abc", score = 5),
             WordScore(wordUsed = "xyz", score = 7),
@@ -34,7 +34,7 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with an invalid score value, Then the service should throw an error`() {
+    fun `When saving a score that does not match based on the rules, Then the service should throw an error`() {
         val scoreToSave = WordScore(wordUsed = "abc", score = 5)
         assertThrows<IllegalArgumentException> {
             service.save(scoreToSave)
@@ -43,7 +43,7 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with an invalid letter, Then the service should throw an error`() {
+    fun `When saving a score with invalid letters used, Then the service should throw an error`() {
         val scoreToSave = WordScore(wordUsed = "Ü@a", score = 5)
         assertThrows<IllegalArgumentException> {
             service.save(scoreToSave)
@@ -52,7 +52,7 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with an existing word, Then the service it should throw an error`() {
+    fun `When saving a score that is an existing word, Then the service it should throw an error`() {
         every { scoresRepository.existsByWordUsed("EXCITING") } returns true
 
         val scoreToSave = WordScore(wordUsed = "EXCITING", score = 5)
@@ -63,7 +63,7 @@ class ScoresServiceTest {
     }
 
     @Test
-    fun `When POST scores is invoked with a valid score value, Then it should be saved successfully`() {
+    fun `When saving a score - word combination that is valid, Then it should be saved successfully`() {
         val scoreToSave = WordScore(wordUsed = "AEIOU", score = 5)
         every { rulesService.findAllLetterRules() } returns letterRules
         every { scoresRepository.save(scoreToSave) } returns scoreToSave
