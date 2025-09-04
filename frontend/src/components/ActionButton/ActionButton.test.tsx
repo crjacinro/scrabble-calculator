@@ -6,7 +6,7 @@ describe('ActionButton', () => {
   const defaultProps = {
     className: 'btn btn-primary',
     icon: <span data-testid="icon">🚀</span>,
-    children: 'Click me',
+    text: 'Click me',
   };
 
   it('renders with no issues with default properties', () => {

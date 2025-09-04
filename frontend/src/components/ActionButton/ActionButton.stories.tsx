@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ActionButton from './ActionButton';
+import { SpinnerIcon } from '~/assets/SpinnerIcon';
 
 const meta: Meta<typeof ActionButton> = {
   title: 'Components/ActionButton',
@@ -30,7 +31,7 @@ export const Default: Story = {
   args: {
     className: 'btn btn-primary',
     icon: <span>🚀</span>,
-    children: 'Click me',
+    text: 'Click me',
   },
 };
 
@@ -39,8 +40,8 @@ export const Loading: Story = {
   args: {
     className: 'btn btn-primary',
     icon: <span>🚀</span>,
-    loadingIcon: <span className="loading loading-spinner loading-sm"></span>,
-    children: 'Loading...',
+    loadingIcon: <SpinnerIcon />,
+    text: 'Loading...',
     isLoading: true,
   },
 };
@@ -50,7 +51,7 @@ export const Disabled: Story = {
   args: {
     className: 'btn btn-primary',
     icon: <span>🚀</span>,
-    children: 'Disabled',
+    text: 'Disabled',
     disabled: true,
   },
 };
@@ -60,7 +61,7 @@ export const Secondary: Story = {
   args: {
     className: 'btn btn-secondary',
     icon: <span>📝</span>,
-    children: 'Secondary',
+    text: 'Secondary',
   },
 };
 
@@ -68,7 +69,7 @@ export const Accent: Story = {
   args: {
     className: 'btn btn-accent',
     icon: <span>✨</span>,
-    children: 'Accent',
+    text: 'Accent',
   },
 };
 
@@ -76,7 +77,7 @@ export const Ghost: Story = {
   args: {
     className: 'btn btn-ghost',
     icon: <span>👻</span>,
-    children: 'Ghost',
+    text: 'Ghost'
   },
 };
 
@@ -85,7 +86,7 @@ export const Large: Story = {
   args: {
     className: 'btn btn-primary btn-lg',
     icon: <span>🚀</span>,
-    children: 'Large Button',
+    text: 'Large Button'
   },
 };
 
@@ -94,6 +95,6 @@ export const Small: Story = {
   args: {
     className: 'btn btn-primary btn-sm',
     icon: <span>🚀</span>,
-    children: 'Small',
+    text: 'Small'
   },
 };

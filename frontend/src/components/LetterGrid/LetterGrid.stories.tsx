@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LetterGrid from './LetterGrid';
 
 const meta: Meta<typeof LetterGrid> = {
@@ -71,8 +71,8 @@ export const Default: Story = {
 export const PartiallyFilled: Story = {
   render: LetterGridWrapper,
   args: {
-    tiles: ['S', 'C', 'R', 'A', 'B', 'B', 'L'],
-    letterScore: [1, 3, 1, 1, 3, 3, 1],
+    tiles: ['T', 'E', 'S', 'T', '', '', ''],
+    letterScore: [1, 3, 1, 1],
   },
 };
 
@@ -80,7 +80,7 @@ export const PartiallyFilled: Story = {
 export const FullyFilled: Story = {
   render: LetterGridWrapper,
   args: {
-    tiles: ['S', 'C', 'R', 'A', 'B', 'B', 'L'],
+    tiles: ['T', 'E', 'S', 'T', 'I', 'N', 'G'],
     letterScore: [1, 3, 1, 1, 3, 3, 1],
   },
 };
@@ -89,8 +89,8 @@ export const FullyFilled: Story = {
 export const HighValueLetters: Story = {
   render: LetterGridWrapper,
   args: {
-    tiles: ['Q', 'U', 'I', 'Z', 'Z', 'E', 'S'],
-    letterScore: [10, 1, 1, 10, 10, 1, 1],
+    tiles: ['Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'],
+    letterScore: [10, 10, 10, 10, 10, 10, 10],
   },
 };
 
@@ -98,7 +98,7 @@ export const HighValueLetters: Story = {
 export const MixedCase: Story = {
   render: LetterGridWrapper,
   args: {
-    tiles: ['s', 'c', 'r', 'a', 'b', 'b', 'l'],
-    letterScore: [1, 3, 1, 1, 3, 3, 1],
+    tiles: ['s', 'c', 'r', 'a', 'b', 'b', 'l', 'e'],
+    letterScore: [1, 3, 1, 1, 3, 3, 1, 1],
   },
 };
