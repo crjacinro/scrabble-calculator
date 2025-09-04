@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scrabble-frontend:latest
+    container_name: scrabble-frontend-standalone
+    ports:
+      - "3000:80"
+    restart: unless-stopped

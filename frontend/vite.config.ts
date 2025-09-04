@@ -5,11 +5,15 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 // @ts-ignore
+// @ts-ignore
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./src/setup.ts'],
+  },
+  server: {
+    port: 3000
   },
 })

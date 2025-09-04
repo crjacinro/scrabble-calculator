@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import LetterGrid from '../LetterGrid';
+import LetterGrid from './LetterGrid';
 
 describe('LetterGrid', () => {
   const defaultProps = {

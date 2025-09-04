@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import ScoreDialog from '../ScoreDialog';
+import ScoreDialog from './ScoreDialog';
 import { TopScore } from '~/domain/scores';
 
 // Mock the domain module

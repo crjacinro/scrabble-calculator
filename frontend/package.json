@@ -11,7 +11,8 @@
     "serve": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "lint": "npx eslint \"src/**/*.{js,jsx,ts,ts}\""
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

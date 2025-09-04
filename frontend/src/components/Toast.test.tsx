@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import Toast, { ToastType } from '../Toast';
+import Toast, { ToastType } from './Toast';
 
 describe('Toast', () => {
   const defaultProps = {

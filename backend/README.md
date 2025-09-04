@@ -14,6 +14,7 @@ For better development experience, use IntelliJ IDEA Kotlin and Spring Boot plug
 ```bash
 docker compose up -d --build
 ```
+This will run the backend as a standalone container
 
 ## 🏗️ Project Overview
 

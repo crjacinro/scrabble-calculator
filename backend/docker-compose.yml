@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: scrabble-backend:latest
-    container_name: scrabble-backend
+    container_name: scrabble-backend-standalone
     ports:
       - "8080:8080"
     environment:
