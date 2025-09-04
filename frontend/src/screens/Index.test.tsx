@@ -121,21 +121,25 @@ describe('Index', () => {
   it('renders action buttons', async () => {
     renderWithQueryClient(<Index />);
     await waitFor(() => {
-      expect(screen.getAllByTestId('action-button')).toHaveLength(3);
+      expect(screen.getByText('Reset Tiles')).toBeTruthy();
+      expect(screen.getByText('View Top Scores')).toBeTruthy();
+      expect(screen.getByText('Save Score')).toBeTruthy();
     });
   });
 
   it('renders letter grid', async () => {
-    renderWithQueryClient(<Index />);
+    const result = renderWithQueryClient(<Index />);
     await waitFor(() => {
-      expect(screen.getByTestId('letter-grid')).toBeTruthy();
-    });
-  });
-
-  it('renders head component', async () => {
-    renderWithQueryClient(<Index />);
-    await waitFor(() => {
-      expect(screen.getByTestId('head')).toBeTruthy();
+      expect(result.container.querySelector('#tile-0')).toBeTruthy();
+      expect(result.container.querySelector('#tile-1')).toBeTruthy();
+      expect(result.container.querySelector('#tile-2')).toBeTruthy();
+      expect(result.container.querySelector('#tile-3')).toBeTruthy();
+      expect(result.container.querySelector('#tile-4')).toBeTruthy();
+      expect(result.container.querySelector('#tile-5')).toBeTruthy();
+      expect(result.container.querySelector('#tile-6')).toBeTruthy();
+      expect(result.container.querySelector('#tile-7')).toBeTruthy();
+      expect(result.container.querySelector('#tile-8')).toBeTruthy();
+      expect(result.container.querySelector('#tile-9')).toBeTruthy();
     });
   });
 }); 

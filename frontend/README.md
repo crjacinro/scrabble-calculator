@@ -49,9 +49,9 @@ src/
 └── styles/              # CSS and styling files
 ```
 
-## 🧪 Testing and Linting
+## 🧪 Unit Testing, UI Testing and Linting
 
-### Test Commands
+### Unit Test Commands
 
 ```bash
 # Run tests in watch mode
@@ -69,6 +69,14 @@ npm run test:run
 ```bash
 # Run the linter
 npm run lint
+```
+
+### UI Testing with Storybook
+
+```bash
+# Run the storybook server
+npm run storyboook
+# You can access it at http://localhost:6006
 ```
 
 ## 🎨 Styling & UI

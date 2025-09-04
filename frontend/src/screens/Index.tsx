@@ -1,10 +1,10 @@
-import { Head } from '~/components/Head';
+import { Head } from '~/components/Head/Head';
 import React, { useEffect, useState } from 'react';
-import LetterGrid from '~/components/LetterGrid';
-import ActionButton from '~/components/ActionButton';
-import Loading from '~/components/Loading';
-import Toast, { ToastType } from '~/components/Toast';
-import ScoreDialog from '~/components/ScoreDialog';
+import LetterGrid from '~/components/LetterGrid/LetterGrid';
+import ActionButton from '~/components/ActionButton/ActionButton';
+import Loading from '~/components/Loading/Loading';
+import Toast, { ToastType } from '~/components/Toast/Toast';
+import ScoreDialog from '~/components/ScoreDialog/ScoreDialog';
 import { useQuery } from '@tanstack/react-query';
 import { getRulesApi, getRulesLocal } from '~/data/rules-data';
 import { STALE_TIME } from '~/constants';

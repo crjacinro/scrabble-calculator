@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
 export enum ToastType {
-  Error ,
+  Error,
   Success,
-  Info
+  Info,
 }
 
 interface ToastProps {
