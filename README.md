@@ -75,3 +75,9 @@ Both frontend and backend include comprehensive test suites:
 
 - **Frontend**: Vitest + React Testing Library
 - **Backend**: JUnit 5 + MockK
+
+## 🤖 CI/CD Integration
+
+Through Github actions, changes detected in `src` directories will run the pipeline.
+
+See the [Actions History](https://github.com/crjacinro/scrabble-calculator/actions) for more details.

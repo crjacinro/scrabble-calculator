@@ -79,6 +79,12 @@ npm run storyboook
 # You can access it at http://localhost:6006
 ```
 
+## 🤖 CI/CD Integration
+
+Through Github actions, changes detected in `src` directories will run the pipeline.
+
+See the [Actions History](https://github.com/crjacinro/scrabble-calculator/actions) for more details.
+
 ## 🎨 Styling & UI
 
 - **Tailwind CSS**: Utility-first CSS framework

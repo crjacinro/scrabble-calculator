@@ -46,6 +46,12 @@ kotlin --version  # Should be >= 1.9.25
 ./gradlew test
 ```
 
+## 🤖 CI/CD Integration
+
+Through Github actions, changes detected in `src` directories will run the pipeline.
+
+See the [Actions History](https://github.com/crjacinro/scrabble-calculator/actions) for more details.
+
 ## 📖 API Documentation
 
 Once the application is running, access the interactive API documentation at:
