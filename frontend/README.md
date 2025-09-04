@@ -22,7 +22,13 @@ npm run dev
 docker compose up -d --build
 ```
 
-This will run the frontend as a standalone container
+This will run the frontend as a standalone container.
+
+In case your port 3000 is used, use the following commands to kill the process using it:
+
+```bash
+kill $(lsof -t -i:3000)
+```
 
 ## 🏗️ Project Overview
 

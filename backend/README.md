@@ -14,7 +14,13 @@ For better development experience, use IntelliJ IDEA Kotlin and Spring Boot plug
 ```bash
 docker compose up -d --build
 ```
-This will run the backend as a standalone container
+This will run the backend as a standalone container.
+
+In case your port 8080 is used, use the following commands to kill the process using it:
+
+```bash
+kill $(lsof -t -i:8080)
+```
 
 ## 🏗️ Project Overview
 

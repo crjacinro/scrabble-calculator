@@ -13,7 +13,8 @@ scrabble-calculator/
 
 ## 🚀 Quick Start with Docker
 
-The fastest way to run the entire application is using Docker Compose:
+The fastest way to run the entire application is using Docker Compose.
+Make sure your ports 8080 and 3000 are free before running.
 
 ```bash
 # Clone the repository
@@ -28,6 +29,13 @@ docker compose up -d --build
 # Frontend: http://localhost:3000
 # Backend: http://localhost:8080
 # API Documentation: http://localhost:8080/api/v1/swagger-ui.html
+```
+
+In case your ports are used, use the following commands to kill the processes:
+
+```bash
+kill $(lsof -t -i:8080)
+kill $(lsof -t -i:3000)
 ```
 
 ### Docker Services
