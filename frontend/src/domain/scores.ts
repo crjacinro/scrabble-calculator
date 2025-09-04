@@ -4,7 +4,3 @@ export interface TopScore {
   score: number;
   timestamp: string;
 }
-
-export interface ScoresPerLetter {
-  scoresPerLetter: Record<string, number>;
-}

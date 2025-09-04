@@ -1,6 +1,6 @@
 import { Head } from '~/components/Head/Head';
 
-function Page404() {
+const Page404 = () => {
   return (
     <>
       <Head title="The page is not found" />
@@ -18,6 +18,6 @@ function Page404() {
       </div>
     </>
   );
-}
+};
 
 export default Page404

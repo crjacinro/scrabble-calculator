@@ -6,13 +6,13 @@ import Loading from '~/components/Loading/Loading';
 import Toast, { ToastType } from '~/components/Toast/Toast';
 import ScoreDialog from '~/components/ScoreDialog/ScoreDialog';
 import { useQuery } from '@tanstack/react-query';
-import { getRulesApi, getRulesLocal } from '~/data/rules-data';
+import { getRulesApi } from '~/data/rules-data';
 import { STALE_TIME } from '~/constants';
 import { TILE_COUNT } from '~/domain/config';
 import { getTopScores, saveScoreData } from '~/data/scores-data';
 import { TopScore } from '~/domain/scores';
 
-function Index() {
+const Index = () => {
   const [tiles, setTiles] = useState<string[]>(Array(TILE_COUNT).fill(''));
   const [tileScores, setTileScores] = useState<number[]>(Array(TILE_COUNT).fill(''));
   const [score, setScore] = useState<number>(0);
@@ -24,16 +24,15 @@ function Index() {
   const [topScores, setTopScores] = useState<TopScore[]>([]);
   const [isLoadingScores, setIsLoadingScores] = useState(false);
 
-  const scrabbleRules = getRulesLocal();
-
-  const { error, isLoading, isError } = useQuery({
+  const { data, error, isLoading, isError } = useQuery({
     queryKey: ['initialData'],
     queryFn: getRulesApi,
     staleTime: STALE_TIME,
   });
+  const scrabbleRules = data;
 
   useEffect(() => {
-    if (isError && error) {
+    if (scrabbleRules && isError && error) {
       showToastMessage(error.message, ToastType.Error);
     }
   }, [isError, error]);
@@ -41,8 +40,8 @@ function Index() {
   useEffect(() => {
     let newScore = 0;
     tiles.forEach((tile) => {
-      if (tile && scrabbleRules && scrabbleRules.scoresPerLetter[tile]) {
-        newScore += scrabbleRules.scoresPerLetter[tile];
+      if (tile && scrabbleRules && scrabbleRules.get(tile)) {
+        newScore += scrabbleRules.get(tile) ?? 0;
       }
     });
     setScore(newScore);
@@ -58,8 +57,11 @@ function Index() {
     setTiles(newTiles);
 
     const newTileScores = [...tileScores];
-    newTileScores[index] = scrabbleRules.scoresPerLetter[value.toUpperCase()] || 0;
-    setTileScores(newTileScores);
+
+    if (scrabbleRules) {
+      newTileScores[index] = scrabbleRules.get(value.toUpperCase()) ?? 0;
+      setTileScores(newTileScores);
+    }
 
     if (value && index < 9) {
       const nextInput = document.getElementById(`tile-${index + 1}`);
@@ -99,7 +101,7 @@ function Index() {
         wordUsed: word,
       });
 
-      showToastMessage(response.message, ToastType.Success);
+      showToastMessage(response, ToastType.Success);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to save score';
       showToastMessage(errorMessage, ToastType.Error);
@@ -136,6 +138,23 @@ function Index() {
       <>
         <Head title="Scrabble Calculator" />
         <Loading message="Loading Scrabble Calculator..." />
+      </>
+    );
+  }
+
+  if (!scrabbleRules) {
+    return (
+      <>
+        <Head title="Scrabble Calculator" />
+        <div className="min-h-screen bg-base-300 p-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-primary mb-2">Scrabble Calculator</h1>
+              <p className="text-base-content/70">Unable to load game files! Please try again</p>
+            </div>
+          </div>
+        </div>
+        <Toast message={toastMessage} type={toastType} isVisible={showToast} onClose={() => {}} duration={5000} />
       </>
     );
   }
@@ -224,6 +243,6 @@ function Index() {
       <ScoreDialog isOpen={showScoreDialog} onClose={closeScoreDialog} scores={topScores} isLoading={isLoadingScores} />
     </>
   );
-}
+};
 
 export default Index;

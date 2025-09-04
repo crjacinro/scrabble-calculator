@@ -41,11 +41,7 @@ describe('scores-data', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
     });
-    expect(response.success).toBe(true);
-    expect(response.message).toBe('zoo - 42 saved successfully!');
-    expect(typeof response.timestamp).toBe('string');
-    // data is a Promise (from response.json()), ensure it resolves to mocked json
-    await expect(response.data).resolves.toEqual({ id: '123' });
+    expect(response).toEqual('zoo - 42 saved successfully!');
   });
 
   it('saveScoreData should throw when POST fails', async () => {

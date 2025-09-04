@@ -1,4 +1,3 @@
-import { ApiResponse } from '~/data/api-response';
 import { TopScore } from '~/domain/scores';
 import { BACKEND_PORT, BACKEND_URL, DICTIONARY_SERVICE_URL } from '~/constants';
 
@@ -17,7 +16,7 @@ export const validateWord = async (word: string) => {
   }
 };
 
-export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiResponse> => {
+export const saveScoreData = async (request: SaveScoreRequest): Promise<string> => {
   await validateWord(request.wordUsed);
   const endpoint = `${BASE_URL}/api/v1/scores`;
   const response = await fetch(endpoint, {
@@ -32,12 +31,7 @@ export const saveScoreData = async (request: SaveScoreRequest): Promise<ApiRespo
     throw new Error('Failed to save score. Please try again.');
   }
 
-  return {
-    success: true,
-    message: `${request.wordUsed} - ${request.score} saved successfully!`,
-    timestamp: new Date().toISOString(),
-    data: response.json(),
-  };
+  return `${request.wordUsed} - ${request.score} saved successfully!`;
 };
 
 interface TopScoreResponse {

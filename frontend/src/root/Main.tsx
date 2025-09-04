@@ -1,11 +1,11 @@
-import { Router } from "~/router/Router";
+import { Router } from '~/router/Router';
 
-function Main() {
+const Main = () => {
   return (
     <main>
       <Router />
     </main>
   );
-}
+};
 
 export default Main;
