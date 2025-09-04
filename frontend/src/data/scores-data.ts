@@ -27,8 +27,9 @@ export const saveScoreData = async (request: SaveScoreRequest): Promise<string> 
     body: JSON.stringify(request),
   });
 
+  const responseData = await response.json();
   if (!response.ok) {
-    throw new Error('Failed to save score. Please try again.');
+    throw new Error(responseData.message);
   }
 
   return `${request.wordUsed} - ${request.score} saved successfully!`;
@@ -47,11 +48,12 @@ interface TopScoresResponse {
 export const getTopScores = async (): Promise<TopScore[]> => {
   const endpoint = `${BASE_URL}/api/v1/scores?top=10`;
   const response = await fetch(endpoint);
+  const responseData = await response.json();
   if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
+    throw new Error(responseData.message);
   }
 
-  const data = (await response.json()) as TopScoresResponse;
+  const data = responseData as TopScoresResponse;
 
   return data.topScores.map((topScore: TopScoreResponse, index: number) => ({
     rank: (index + 1).toString(),

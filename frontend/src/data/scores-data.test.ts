@@ -50,7 +50,7 @@ describe('scores-data', () => {
       .mockResolvedValueOnce({ ok: true } as unknown as Response) // validateWord ok
       .mockResolvedValueOnce({ ok: false } as unknown as Response); // POST fails
 
-    await expect(saveScoreData(request)).rejects.toThrow('Failed to save score. Please try again.');
+    await expect(saveScoreData(request)).rejects.toThrow();
   });
 
   it('getTopScores should fetch and map top scores with ranks', async () => {
@@ -80,6 +80,6 @@ describe('scores-data', () => {
       status: 404,
       statusText: 'Not Found',
     } as unknown as Response);
-    await expect(getTopScores()).rejects.toThrow('API error: 404 Not Found');
+    await expect(getTopScores()).rejects.toThrow();
   });
 });

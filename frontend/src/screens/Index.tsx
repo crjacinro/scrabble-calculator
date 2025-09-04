@@ -97,6 +97,10 @@ const Index = () => {
   };
 
   const handleSaveScore = async () => {
+    if (tiles[0] === '') {
+      showToastMessage('Please start from the left-most grid', ToastType.Info);
+      return;
+    }
     const word = tiles.filter((tile) => tile).join('');
     setIsSavingScore(true);
     try {
