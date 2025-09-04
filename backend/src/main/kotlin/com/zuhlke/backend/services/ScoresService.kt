@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 @Service
 class ScoresService(
-    private val scoresDb: ScoresRepository, 
+    private val scoresDb: ScoresRepository,
     private val rulesService: RulesService,
     private val webClient: WebClient = WebClient.builder().build()
 ) {
