@@ -52,4 +52,4 @@ export const getTopScores = async (): Promise<TopScore[]> => {
     score: topScore.score,
     timestamp: topScore.timestamp,
   }));
-}; 
+};
