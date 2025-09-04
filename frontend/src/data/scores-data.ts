@@ -1,5 +1,5 @@
 import { TopScore } from '~/domain/scores';
-import { BACKEND_PORT, BACKEND_URL, DICTIONARY_SERVICE_URL } from '~/constants';
+import { BACKEND_PORT, BACKEND_URL } from '~/constants';
 
 const BASE_URL = `${BACKEND_URL}:${BACKEND_PORT}`;
 
@@ -8,16 +8,7 @@ export interface SaveScoreRequest {
   wordUsed: string;
 }
 
-export const validateWord = async (word: string) => {
-  const endpoint = `${DICTIONARY_SERVICE_URL}/${word}`;
-  const isWordValidResponse = await fetch(endpoint);
-  if (!isWordValidResponse.ok) {
-    throw new Error('This is not a valid word in English dictionary. Try again.');
-  }
-};
-
 export const saveScoreData = async (request: SaveScoreRequest): Promise<string> => {
-  await validateWord(request.wordUsed);
   const endpoint = `${BASE_URL}/api/v1/scores`;
   const response = await fetch(endpoint, {
     method: 'POST',

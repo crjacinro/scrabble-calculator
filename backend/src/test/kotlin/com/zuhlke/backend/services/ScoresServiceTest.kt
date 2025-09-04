@@ -10,12 +10,14 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.Pageable
+import org.springframework.web.reactive.function.client.WebClient
 
 class ScoresServiceTest {
 
     private val scoresRepository: ScoresRepository = mockk(relaxed = true)
     private val rulesService: RulesService = mockk(relaxed = true)
-    private val service = ScoresService(scoresRepository, rulesService)
+    private val webClient: WebClient = mockk(relaxed = true)
+    private val service = ScoresService(scoresRepository, rulesService, webClient)
 
     @Test
     fun `When finding the top k highest scores, Then it should return the list with the top k highest scores`() {
@@ -54,6 +56,18 @@ class ScoresServiceTest {
     @Test
     fun `When saving a score that is an existing word, Then the service it should throw an error`() {
         every { scoresRepository.existsByWordUsed("EXCITING") } returns true
+
+        val scoreToSave = WordScore(wordUsed = "EXCITING", score = 5)
+        assertThrows<IllegalArgumentException> {
+            service.save(scoreToSave)
+        }
+        verify(exactly = 0) { scoresRepository.save(scoreToSave) }
+    }
+
+    @Test
+    fun `When saving a score that is not in the dictionary, Then the service it should throw an error`() {
+        every { scoresRepository.existsByWordUsed("EXCITING") } returns false
+        every { webClient.get() } throws IllegalArgumentException("Invalid word in dictionary")
 
         val scoreToSave = WordScore(wordUsed = "EXCITING", score = 5)
         assertThrows<IllegalArgumentException> {

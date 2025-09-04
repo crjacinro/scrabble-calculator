@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { BACKEND_PORT, BACKEND_URL, DICTIONARY_SERVICE_URL } from '~/constants';
-import { getTopScores, saveScoreData, validateWord } from '~/data/scores-data';
+import { BACKEND_PORT, BACKEND_URL } from '~/constants';
+import { getTopScores, saveScoreData } from '~/data/scores-data';
 
 const BASE_URL = `${BACKEND_URL}:${BACKEND_PORT}`;
 
@@ -10,19 +10,7 @@ describe('scores-data', () => {
     vi.resetAllMocks();
   });
 
-  it('validateWord should call dictionary API and succeed on ok', async () => {
-    const mockFetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: true } as unknown as Response);
-
-    await expect(validateWord('test')).resolves.toBeUndefined();
-    expect(mockFetch).toHaveBeenCalledWith(`${DICTIONARY_SERVICE_URL}/test`);
-  });
-
-  it('validateWord should throw on non-ok response', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: false } as unknown as Response);
-    await expect(validateWord('badword')).rejects.toThrow('This is not a valid word in English dictionary. Try again.');
-  });
-
-  it('saveScoreData should validate, post score, and return ApiResponse with message', async () => {
+  it('saveScoreData should validate, post score, and return with message', async () => {
     const request = { score: 42, wordUsed: 'zoo' };
 
     // first call: dictionary validation
@@ -30,13 +18,11 @@ describe('scores-data', () => {
     const mockJson = vi.fn().mockResolvedValue({ id: '123' });
     const fetchMock = vi
       .spyOn(globalThis, 'fetch')
-      .mockResolvedValueOnce({ ok: true } as unknown as Response)
       .mockResolvedValueOnce({ ok: true, json: mockJson } as unknown as Response);
 
     const response = await saveScoreData(request);
 
-    expect(fetchMock).toHaveBeenNthCalledWith(1, `${DICTIONARY_SERVICE_URL}/zoo`);
-    expect(fetchMock).toHaveBeenNthCalledWith(2, `${BASE_URL}/api/v1/scores`, {
+    expect(fetchMock).toHaveBeenNthCalledWith(1, `${BASE_URL}/api/v1/scores`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
